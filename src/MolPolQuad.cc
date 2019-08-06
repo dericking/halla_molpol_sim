@@ -35,23 +35,23 @@ static G4RotationMatrix IdentityMatrix;
 
 MolPolQuad::MolPolQuad(G4double pGradient, G4ThreeVector pOrigin, G4RotationMatrix* pMatrix, G4double pRadius)
 {
-  fGradient    = pGradient ;
-  fOrigin      = pOrigin ;
-  fpMatrix     = pMatrix ;
+  fGradient    = pGradient;
+  fOrigin      = pOrigin;
+  fpMatrix     = pMatrix;
   fRadius      = pRadius;
+  G4cout << "Initialization Quad field center at (" << pOrigin.x() << "," << pOrigin.y() << "," << pOrigin.z() << ")" << G4endl;
 }
 
 
 /////////////////////////////////////////////////////////////////////////
 
-void MolPolQuad::UpdateQuad(G4double pGradient,
-			    G4ThreeVector pOrigin,
-			    G4RotationMatrix* pMatrix,
-			    G4double pRadius){
-  fGradient    = pGradient ;
-  fOrigin      = pOrigin ;
-  fpMatrix     = pMatrix ;
+void MolPolQuad::UpdateQuad(G4double pGradient, G4ThreeVector pOrigin, G4RotationMatrix* pMatrix, G4double pRadius)
+{
+  fGradient    = pGradient;
+  fOrigin      = pOrigin;
+  fpMatrix     = pMatrix;
   fRadius      = pRadius;
+  G4cout << "Updated Quad field center at (" << pOrigin.x() << "," << pOrigin.y() << "," << pOrigin.z() << ")" << G4endl;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -63,8 +63,7 @@ MolPolQuad::~MolPolQuad()
 //  Allow displaced origin and rotation
 //  Extensions by Björn Riese (GSI)
 
-void MolPolQuad::GetFieldValue( const G4double y[4],
-                                G4double B[3]  ) const
+void MolPolQuad::GetFieldValue( const G4double y[4], G4double B[3]  ) const
 {
 
   B[0] = 0;

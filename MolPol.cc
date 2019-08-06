@@ -1,4 +1,4 @@
-#include "CLHEP/Random/Random.h"
+#include "Randomize.hh"
 
 #include "MolPolRunAction.hh"
 #include "MolPolPrimaryGeneratorAction.hh"
@@ -49,13 +49,10 @@
 
 int main(int argc, char** argv){
 
-    // Initialize the CLHEP random engine used by
-    // "shoot" type functions
-
-    unsigned int seed = time(0);
-
-    CLHEP::HepRandom::createInstance();
-    CLHEP::HepRandom::setTheSeed(seed);
+    // Initialize seed
+    G4Random::setTheEngine(new CLHEP::RanecuEngine);
+    G4int seconds =  time(NULL);
+    G4Random::setTheSeed(seconds);
 
     MolPolIO *io = new MolPolIO();
 
@@ -88,7 +85,7 @@ int main(int argc, char** argv){
     ((MolPolRunAction *) run_action)->SetIO(io);
     runManager->SetUserAction(run_action);
 
-    G4VUserPrimaryGeneratorAction* gen_action = new MolPolPrimaryGeneratorAction;
+    G4VUserPrimaryGeneratorAction* gen_action = new MolPolPrimaryGeneratorAction();
     ((MolPolPrimaryGeneratorAction *) gen_action)->SetIO(io);
     rmmess->SetPriGen((MolPolPrimaryGeneratorAction *)gen_action);
     runManager->SetUserAction(gen_action);
@@ -199,6 +196,7 @@ int main(int argc, char** argv){
     delete visManager;
 #endif
 
+    delete runManager;
 
     return 0;
 }

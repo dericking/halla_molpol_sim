@@ -80,6 +80,7 @@ public:
   G4double                    fQ3A;
   G4double                    fQ4A;
   G4double                    fQ5A;
+  G4double                    fQ6A;
 
   //external input field (pole tip) values
   G4double                    fQ1T;
@@ -87,6 +88,25 @@ public:
   G4double                    fQ3T;
   G4double                    fQ4T;
   G4double                    fQ5T;
+  G4double                    fQ6T;
+
+  //for x and y field offsets
+  G4double                    fXoffsetQ1;
+  G4double                    fXoffsetQ2;
+  G4double                    fXoffsetQ3;
+  G4double                    fXoffsetQ4;
+  G4double                    fXoffsetQ5;
+  G4double                    fXoffsetQ6;
+  G4double                    fYoffsetQ1;
+  G4double                    fYoffsetQ2;
+  G4double                    fYoffsetQ3;
+  G4double                    fYoffsetQ4;
+  G4double                    fYoffsetQ5;
+  G4double                    fYoffsetQ6;
+
+  //Solenoid rotations
+  G4double                    fSolRotX;
+  G4double                    fSolRotY;
 
 private:
   MolPolEMField*              fEMfield;
@@ -104,8 +124,8 @@ private:
 
   MolPolEMFieldMessenger*     fFieldMessenger;
 
-  G4int                       fStepperType ;
-  G4double                    fMinStep ;
+  G4int                       fStepperType;
+  G4double                    fMinStep;
 
   //for local field at FZB1 and FZB2
   MolPolQuad*                fMagFieldFZB1 ;

@@ -58,7 +58,15 @@ MolPolMessenger::MolPolMessenger(){
 
     fYmaxCmd = new G4UIcmdWithADoubleAndUnit("/MolPol/ymax", this);
     fYmaxCmd->SetGuidance("Set y range maximum");
-    fYmaxCmd->SetParameterName("ymax", false); 
+    fYmaxCmd->SetParameterName("ymax", false);
+
+    fXsmearCmd = new G4UIcmdWithADoubleAndUnit("/MolPol/xsmear", this);
+    fXsmearCmd->SetGuidance("Set x sigma");
+    fXsmearCmd->SetParameterName("xsmear", false);
+
+    fYsmearCmd = new G4UIcmdWithADoubleAndUnit("/MolPol/ysmear", this);
+    fYsmearCmd->SetGuidance("Set y sigma");
+    fYsmearCmd->SetParameterName("ysmear", false);
 
     fBeamECmd = new G4UIcmdWithADoubleAndUnit("/MolPol/beamE", this);
     fBeamECmd->SetGuidance("Set beam energy");
@@ -91,94 +99,104 @@ MolPolMessenger::MolPolMessenger(){
     fphiMinCmd = new G4UIcmdWithADoubleAndUnit("/MolPol/phimin", this);
     fphiMinCmd->SetGuidance("Set phi range minimum");
     fphiMinCmd->SetParameterName("phimin", false);
- 
+
     fphiMaxCmd = new G4UIcmdWithADoubleAndUnit("/MolPol/phimax", this);
     fphiMaxCmd->SetGuidance("Set phi range maximum");
     fphiMaxCmd->SetParameterName("phimax", false);
 
-    /*
-    fMagSourceCmd = new G4UIcmdWithAnInteger("/MolPol/MagSourceMode", this);
-    fMagSourceCmd->SetGuidance("Set source mode for mag field setting");
-    fMagSourceCmd->SetParameterName("magsource", false);
+    fBeamRotZXCmd = new G4UIcmdWithADoubleAndUnit("/MolPol/beamRotZX", this);
+    fBeamRotZXCmd->SetGuidance("Set beam angle off Z-axis towards X-axis");
+    fBeamRotZXCmd->SetParameterName("beamRotZX", false);
 
-    fQ1ACmd = new G4UIcmdWithADouble("/MolPol/Q1A", this);
-    fQ1ACmd->SetGuidance("Set Q1 current");
-    fQ1ACmd->SetParameterName("Q1A", false);
+    fBeamRotZYCmd = new G4UIcmdWithADoubleAndUnit("/MolPol/beamRotZY", this);
+    fBeamRotZYCmd->SetGuidance("Set beam angle off Z-axis towards Y-axis");
+    fBeamRotZYCmd->SetParameterName("beamRotZY", false);
 
-    fQ2ACmd = new G4UIcmdWithADouble("/MolPol/Q2A", this);
-    fQ2ACmd->SetGuidance("Set Q2 current");
-    fQ2ACmd->SetParameterName("Q2A", false);
+    fLevchukEffectCmd = new G4UIcmdWithABool("/MolPol/calculateLevchuk", this);
+    fLevchukEffectCmd->SetGuidance("Set Levchuck Effect On:True Off:False");
+    fLevchukEffectCmd->SetParameterName("calculateLevchuk",false);
 
-    fQ3ACmd = new G4UIcmdWithADouble("/MolPol/Q3A", this);
-    fQ3ACmd->SetGuidance("Set Q3 current");
-    fQ3ACmd->SetParameterName("Q3A", false);
+    fXCmd = new G4UIcmdWithADoubleAndUnit("/MolPol/fx", this);
+    fXCmd->SetGuidance("Set particle x");
+    fXCmd->SetParameterName("fx", false);
 
-    fQ4ACmd = new G4UIcmdWithADouble("/MolPol/Q4A", this);
-    fQ4ACmd->SetGuidance("Set Q4 current");
-    fQ4ACmd->SetParameterName("Q4A", false);
-
-    fQ5ACmd = new G4UIcmdWithADouble("/MolPol/Q5A", this);
-    fQ5ACmd->SetGuidance("Set Dipole current");
-    fQ5ACmd->SetParameterName("Q5A", false);
-
-    fQ1TCmd = new G4UIcmdWithADouble("/MolPol/Q1T", this);
-    fQ1TCmd->SetGuidance("Set Q1 field in Tesla");
-    fQ1TCmd->SetParameterName("Q1T", false);
-
-    fQ2TCmd = new G4UIcmdWithADouble("/MolPol/Q2T", this);
-    fQ2TCmd->SetGuidance("Set Q2 field in Tesla" );
-    fQ2TCmd->SetParameterName("Q2T", false);
-
-    fQ3TCmd = new G4UIcmdWithADouble("/MolPol/Q3T", this);
-    fQ3TCmd->SetGuidance("Set Q3 field in Tesla");
-    fQ3TCmd->SetParameterName("Q3T", false);
-
-    fQ4TCmd = new G4UIcmdWithADouble("/MolPol/Q4T", this);
-    fQ4TCmd->SetGuidance("Set Q4 field in Tesla");
-    fQ4TCmd->SetParameterName("Q4T", false);
-
-    fQ5TCmd = new G4UIcmdWithADouble("/MolPol/Q5T", this);
-    fQ5TCmd->SetGuidance("Set Dipole field in Tesla");
-    fQ5TCmd->SetParameterName("Q5T", false);
-    */
+    fYCmd = new G4UIcmdWithADoubleAndUnit("/MolPol/fy", this);
+    fYCmd->SetGuidance("Set particle y");
+    fYCmd->SetParameterName("fy", false);
 
     fZCmd = new G4UIcmdWithADoubleAndUnit("/MolPol/fz", this);
     fZCmd->SetGuidance("Set particle z");
     fZCmd->SetParameterName("fz", false);
 
+    fRadCorrCmd = new G4UIcmdWithABool("/MolPol/radCorrections",this);
+    fRadCorrCmd->SetGuidance("Radiative corrections? True:On False:Off");
+    fRadCorrCmd->SetParameterName("radCorrections",false);
+
+    fRemollMSFlagCmd = new G4UIcmdWithABool("/MolPol/remollMS",this);
+    fRemollMSFlagCmd->SetGuidance("Remoll Multiple Scattering? True:On False:Off");
+    fRemollMSFlagCmd->SetParameterName("remollMS",false);
+
+    fTargPolCmd = new G4UIcmdWithADouble("/MolPol/targetPolPct",this);
+    fTargPolCmd->SetGuidance("Target polarization percentage? (Between 0 and 1)");
+    fTargPolCmd->SetParameterName("targetPolPct",false);
 }
 
 MolPolMessenger::~MolPolMessenger(){
+  delete fLevchukEffectCmd;
+  delete fTargPolCmd;
+  delete fRadCorrCmd;
+  delete fRemollMSFlagCmd;
+  delete fXminCmd;
+  delete fXmaxCmd;
+  delete fYminCmd;
+  delete fYmaxCmd;
+  delete fXsmearCmd;
+  delete fYsmearCmd;
+  delete fBeamECmd;
+  delete fEminCmd;
+  delete fEmaxCmd;
+  delete fthetaComMinCmd;
+  delete fthetaComMaxCmd;
+  delete fthetaMinCmd;
+  delete fthetaMaxCmd;
+  delete fphiMinCmd;
+  delete fphiMaxCmd;
+  delete fXCmd;
+  delete fYCmd;
+  delete fZCmd;
+
 }
 
 
 void MolPolMessenger::SetNewValue(G4UIcommand* cmd, G4String newValue){
+  if( cmd == fTargPolCmd ){
+    G4double x = fTargPolCmd->GetNewDoubleValue(newValue);
+    if( x >= 0.0 && x <= 1.0) fprigen->fTargPol = x;
+    else  G4Exception("MolPolMessenger.cc","",RunMustBeAborted,"targetPolPct set outside of allowable bounds; default value being used.");
+  }
+  if( cmd == fRadCorrCmd ){
+    G4bool flag = fRadCorrCmd->GetNewBoolValue(newValue);
+    fprigen->fRadCorrFlag = flag;
+  }
+  if( cmd == fRemollMSFlagCmd ){
+    G4bool flag = fRemollMSFlagCmd->GetNewBoolValue(newValue);
+    fprigen->fRemollMSFlag = flag;
+  }
+  if( cmd == fLevchukEffectCmd ){
+    G4bool flag = fLevchukEffectCmd->GetNewBoolValue(newValue);
+    fprigen->fLevchukFlag = flag;
+  }
   if( cmd == fileCmd ){
     fIO->SetFilename(newValue);
   }
-
   if( cmd == seedCmd ){
     G4int seed = seedCmd->GetNewIntValue(newValue);
-    CLHEP::HepRandom::setTheSeed(seed);
+    G4Random::setTheSeed(seed);
   }
-
-  // POSSCAN
-  /*
-  if (cmd == fDetPosXCmd ) {
-    G4double x = fDetPosXCmd->GetNewDoubleValue(newValue);
-    fdetcon->fDetPosX = x;
-  }
-
-  if (cmd == fDetPosYCmd ) {
-    G4double x = fDetPosYCmd->GetNewDoubleValue(newValue);
-    fdetcon->fDetPosY = x;
-  }
-  */
 
   if( cmd == genSelectCmd ){
     fprigen->SetGenerator(newValue);
   }
-
   if( cmd == fXminCmd ){
     G4double x = fXminCmd->GetNewDoubleValue(newValue);
     fprigen->fXmin = x;
@@ -195,8 +213,16 @@ void MolPolMessenger::SetNewValue(G4UIcommand* cmd, G4String newValue){
     G4double x = fYmaxCmd->GetNewDoubleValue(newValue);
     fprigen->fYmax = x;
   }
+  if( cmd == fXsmearCmd ){
+    G4double x = fXsmearCmd->GetNewDoubleValue(newValue);
+    fprigen->fXsmear = x;
+  }
+  if( cmd == fYsmearCmd ){
+    G4double x = fYsmearCmd->GetNewDoubleValue(newValue);
+    fprigen->fYsmear = x;
+  }
   if( cmd == fBeamECmd ){
-    G4double x = fBeamECmd->GetNewDoubleValue(newValue);    
+    G4double x = fBeamECmd->GetNewDoubleValue(newValue);
     fprigen->fBeamE = x;
   }
   if( cmd == fEminCmd ){
@@ -231,55 +257,26 @@ void MolPolMessenger::SetNewValue(G4UIcommand* cmd, G4String newValue){
     G4double x = fphiMaxCmd->GetNewDoubleValue(newValue);
     fprigen->fphiMax = x;
   }
-  /*
-  if( cmd == fMagSourceCmd ){
-    G4double x = fMagSourceCmd->GetNewIntValue(newValue);
-    fFieldSet->fMagSourceMode = x;
+  
+  if( cmd == fXCmd ){
+    G4double x = fXCmd->GetNewDoubleValue(newValue);
+    fprigen->fX = x;
   }
-  if( cmd == fQ1ACmd ){
-    G4double x = fQ1ACmd->GetNewDoubleValue(newValue);
-    fFieldSet->fQ1A = x;
+  if( cmd == fYCmd ){
+    G4double x = fYCmd->GetNewDoubleValue(newValue);
+    fprigen->fY = x;
   }
-  if( cmd == fQ2ACmd ){
-    G4double x = fQ2ACmd->GetNewDoubleValue(newValue);
-    fFieldSet->fQ2A = x;
-  }
-  if( cmd == fQ3ACmd ){
-    G4double x = fQ3ACmd->GetNewDoubleValue(newValue);
-    fFieldSet->fQ3A = x;
-  }
-  if( cmd == fQ4ACmd ){
-    G4double x = fQ4ACmd->GetNewDoubleValue(newValue);
-    fFieldSet->fQ4A = x;
-  }
-  if( cmd == fQ5ACmd ){
-    G4double x = fQ5ACmd->GetNewDoubleValue(newValue);
-    fFieldSet->fQ5A = x;
-  }
-  if( cmd == fQ1ACmd ){
-    G4double x = fQ1ACmd->GetNewDoubleValue(newValue);
-    fFieldSet->fQ1T = x;
-  }
-  if( cmd == fQ2ACmd ){
-    G4double x = fQ2ACmd->GetNewDoubleValue(newValue);
-    fFieldSet->fQ2T = x;
-  }
-  if( cmd == fQ3ACmd ){
-    G4double x = fQ3ACmd->GetNewDoubleValue(newValue);
-    fFieldSet->fQ3T = x;
-  }
-  if( cmd == fQ4ACmd ){
-    G4double x = fQ4ACmd->GetNewDoubleValue(newValue);
-    fFieldSet->fQ4T = x;
-  }
-  if( cmd == fQ5ACmd ){
-    G4double x = fQ5ACmd->GetNewDoubleValue(newValue);
-    fFieldSet->fQ5T = x;
-  }
-  */
   if( cmd == fZCmd ){
     G4double x = fZCmd->GetNewDoubleValue(newValue);
     fprigen->fZ = x;
   }
-    
+  
+  if( cmd == fBeamRotZXCmd ){
+    G4double x = fBeamRotZXCmd->GetNewDoubleValue(newValue);
+    fprigen->fBeamRotZX = x;
+  }
+  if( cmd == fBeamRotZYCmd ){
+    G4double x = fBeamRotZYCmd->GetNewDoubleValue(newValue);
+    fprigen->fBeamRotZY = x;
+  }
 }

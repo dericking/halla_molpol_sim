@@ -19,6 +19,7 @@ public: // with description
                      G4double B[]     ) const;
   G4ThreeVector GetFringeField(G4ThreeVector) const;
   void UpdateQuad(G4double, G4ThreeVector, G4RotationMatrix*, G4double);
+
 private:
 
   G4double          fGradient;

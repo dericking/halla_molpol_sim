@@ -18,6 +18,7 @@ MolPolEMFieldMessenger::MolPolEMFieldMessenger(MolPolEMFieldSetup* fieldSetup)
   fMagSourceCmd = new G4UIcmdWithAnInteger("/field/MagSourceMode", this);
   fMagSourceCmd->SetGuidance("Set source mode for mag field setting");
   fMagSourceCmd->SetParameterName("magsource", false);
+  fMagSourceCmd->SetDefaultValue(1);
 
   fQ1ACmd = new G4UIcmdWithADouble("/field/setQ1A", this);
   fQ1ACmd->SetGuidance("Set Q1 current");
@@ -39,6 +40,10 @@ MolPolEMFieldMessenger::MolPolEMFieldMessenger(MolPolEMFieldSetup* fieldSetup)
   fQ5ACmd->SetGuidance("Set Dipole current");
   fQ5ACmd->SetParameterName("Q5A", false);
 
+  fQ6ACmd = new G4UIcmdWithADouble("/field/setQ6A", this);
+  fQ6ACmd->SetGuidance("Set Dipole current");
+  fQ6ACmd->SetParameterName("Q6A", false);
+
   fQ1TCmd = new G4UIcmdWithADouble("/field/setQ1T", this);
   fQ1TCmd->SetGuidance("Set Q1 field in Tesla");
   fQ1TCmd->SetParameterName("Q1T", false);
@@ -46,6 +51,7 @@ MolPolEMFieldMessenger::MolPolEMFieldMessenger(MolPolEMFieldSetup* fieldSetup)
   fQ2TCmd = new G4UIcmdWithADouble("/field/setQ2T", this);
   fQ2TCmd->SetGuidance("Set Q2 field in Tesla" );
   fQ2TCmd->SetParameterName("Q2T", false);
+
   fQ3TCmd = new G4UIcmdWithADouble("/field/setQ3T", this);
   fQ3TCmd->SetGuidance("Set Q3 field in Tesla");
   fQ3TCmd->SetParameterName("Q3T", false);
@@ -57,6 +63,66 @@ MolPolEMFieldMessenger::MolPolEMFieldMessenger(MolPolEMFieldSetup* fieldSetup)
   fQ5TCmd = new G4UIcmdWithADouble("/field/setQ5T", this);
   fQ5TCmd->SetGuidance("Set Dipole field in Tesla");
   fQ5TCmd->SetParameterName("Q5T", false);
+
+  fQ6TCmd = new G4UIcmdWithADouble("/field/setQ6T", this);
+  fQ6TCmd->SetGuidance("Set Holding field in Tesla");
+  fQ6TCmd->SetParameterName("Q6T", false);
+
+  fQ1XposCmd = new G4UIcmdWithADoubleAndUnit("/field/setQ1XOffset",this);
+  fQ1XposCmd->SetGuidance("Set Q1 X-Position Offset with unit");
+  fQ1XposCmd->SetParameterName("Q1XOffset", false);
+  
+  fQ2XposCmd = new G4UIcmdWithADoubleAndUnit("/field/setQ2XOffset",this);
+  fQ2XposCmd->SetGuidance("Set Q2 X-Position Offset with unit");
+  fQ2XposCmd->SetParameterName("Q2XOffset", false);
+
+  fQ3XposCmd = new G4UIcmdWithADoubleAndUnit("/field/setQ3XOffset",this);
+  fQ3XposCmd->SetGuidance("Set Q3 X-Position Offset with unit");
+  fQ3XposCmd->SetParameterName("Q3XOffset", false);
+
+  fQ4XposCmd = new G4UIcmdWithADoubleAndUnit("/field/setQ4XOffset",this);
+  fQ4XposCmd->SetGuidance("Set Q4 X-Position Offset with unit");
+  fQ4XposCmd->SetParameterName("Q4XOffset", false);
+
+  fQ5XposCmd = new G4UIcmdWithADoubleAndUnit("/field/setQ45Offset",this);
+  fQ5XposCmd->SetGuidance("Set Q5 X-Position Offset with unit");
+  fQ5XposCmd->SetParameterName("Q5XOffset", false);
+
+  fQ6XposCmd = new G4UIcmdWithADoubleAndUnit("/field/setQ6XOffset",this);
+  fQ6XposCmd->SetGuidance("Set Q6 X-Position Offset with unit");
+  fQ6XposCmd->SetParameterName("Q6XOffset", false);
+  
+  fQ1YposCmd = new G4UIcmdWithADoubleAndUnit("/field/setQ1YOffset",this);
+  fQ1YposCmd->SetGuidance("Set Q1 Y-Position Offset with unit");
+  fQ1YposCmd->SetParameterName("Q1YOffset", false);
+  
+  fQ2YposCmd = new G4UIcmdWithADoubleAndUnit("/field/setQ2YOffset",this);
+  fQ2YposCmd->SetGuidance("Set Q2 Y-Position Offset with unit");
+  fQ2YposCmd->SetParameterName("Q2YOffset", false);
+
+  fQ3YposCmd = new G4UIcmdWithADoubleAndUnit("/field/setQ3YOffset",this);
+  fQ3YposCmd->SetGuidance("Set Q3 Y-Position Offset with unit");
+  fQ3YposCmd->SetParameterName("Q3YOffset", false);
+
+  fQ4YposCmd = new G4UIcmdWithADoubleAndUnit("/field/setQ4YOffset",this);
+  fQ4YposCmd->SetGuidance("Set Q4 Y-Position Offset with unit");
+  fQ4YposCmd->SetParameterName("Q4YOffset", false);
+
+  fQ5YposCmd = new G4UIcmdWithADoubleAndUnit("/field/setQ5YOffset",this);
+  fQ5YposCmd->SetGuidance("Set Q5 Y-Position Offset with unit");
+  fQ5YposCmd->SetParameterName("Q5YOffset", false);
+
+  fQ6YposCmd = new G4UIcmdWithADoubleAndUnit("/field/setQ6YOffset",this);
+  fQ6YposCmd->SetGuidance("Set Q6 Y-Position Offset with unit");
+  fQ6YposCmd->SetParameterName("Q6YOffset", false);
+  
+  fQ6XrotCmd = new G4UIcmdWithADoubleAndUnit("/field/setQ6XRot",this);
+  fQ6XrotCmd->SetGuidance("Set Solenoid X Rotation with unit");
+  fQ6XrotCmd->SetParameterName("setQ6XRot", false);
+
+  fQ6YrotCmd = new G4UIcmdWithADoubleAndUnit("/field/setQ6YRot",this);
+  fQ6YrotCmd->SetGuidance("Set Solenoid Y Rotation with unit");
+  fQ6YrotCmd->SetParameterName("setQ6YRot", false);
 
   fUpdateCmd = new G4UIcmdWithoutParameter("/field/update",this);
   fUpdateCmd->SetGuidance("This command MUST be applied after setting field values ");
@@ -106,6 +172,9 @@ void MolPolEMFieldMessenger::SetNewValue( G4UIcommand* cmd, G4String newValue)
   }else if( cmd == fQ5ACmd ){
     G4double x = fQ5ACmd->GetNewDoubleValue(newValue);
     fEMfieldSetup->fQ5A = x;
+  }else if( cmd == fQ6ACmd ){
+    G4double x = fQ6ACmd->GetNewDoubleValue(newValue);
+    fEMfieldSetup->fQ6A = x;
   }else if( cmd == fQ1TCmd ){
     G4double x = fQ1TCmd->GetNewDoubleValue(newValue);
     fEMfieldSetup->fQ1T = x;
@@ -121,12 +190,61 @@ void MolPolEMFieldMessenger::SetNewValue( G4UIcommand* cmd, G4String newValue)
   }else if( cmd == fQ5TCmd ){
     G4double x = fQ5TCmd->GetNewDoubleValue(newValue);
     fEMfieldSetup->fQ5T = x;
+  }else if( cmd == fQ6TCmd ){
+    G4double x = fQ6TCmd->GetNewDoubleValue(newValue);
+    fEMfieldSetup->fQ6T = x;
+  }else if( cmd == fQ1XposCmd ){
+    G4double x = fQ1XposCmd->GetNewDoubleValue(newValue);
+    fEMfieldSetup->fXoffsetQ1 = x;
+  }else if( cmd == fQ2XposCmd ){
+    G4double x = fQ2XposCmd->GetNewDoubleValue(newValue);
+    fEMfieldSetup->fXoffsetQ2 = x;
+  }else if( cmd == fQ3XposCmd ){
+    G4double x = fQ3XposCmd->GetNewDoubleValue(newValue);
+    fEMfieldSetup->fXoffsetQ3 = x;
+  }else if( cmd == fQ4XposCmd ){
+    G4double x = fQ4XposCmd->GetNewDoubleValue(newValue);
+    fEMfieldSetup->fXoffsetQ4 = x;
+  }else if( cmd == fQ5XposCmd ){
+    G4double x = fQ5XposCmd->GetNewDoubleValue(newValue);
+    fEMfieldSetup->fXoffsetQ5 = x;
+  }else if( cmd == fQ6XposCmd ){
+    G4double x = fQ6XposCmd->GetNewDoubleValue(newValue);
+    fEMfieldSetup->fXoffsetQ6 = x;
+  }else if( cmd == fQ1YposCmd ){
+    G4double x = fQ1YposCmd->GetNewDoubleValue(newValue);
+    fEMfieldSetup->fYoffsetQ1 = x;
+  }else if( cmd == fQ2YposCmd ){
+    G4double x = fQ2YposCmd->GetNewDoubleValue(newValue);
+    fEMfieldSetup->fYoffsetQ2 = x;
+  }else if( cmd == fQ3YposCmd ){
+    G4double x = fQ3YposCmd->GetNewDoubleValue(newValue);
+    fEMfieldSetup->fYoffsetQ3 = x;
+  }else if( cmd == fQ4YposCmd ){
+    G4double x = fQ4YposCmd->GetNewDoubleValue(newValue);
+    fEMfieldSetup->fYoffsetQ4 = x;
+  }else if( cmd == fQ5YposCmd ){
+    G4double x = fQ5YposCmd->GetNewDoubleValue(newValue);
+    fEMfieldSetup->fYoffsetQ5 = x;
+  }else if( cmd == fQ6YposCmd ){
+    G4double x = fQ6YposCmd->GetNewDoubleValue(newValue);
+    fEMfieldSetup->fYoffsetQ6 = x;
+  }else if( cmd == fQ6XrotCmd ){
+    G4double x = fQ6XrotCmd->GetNewDoubleValue(newValue);
+    fEMfieldSetup->fSolRotX = x;
+  }else if( cmd == fQ6YrotCmd ){
+    G4double x = fQ6YrotCmd->GetNewDoubleValue(newValue);
+    fEMfieldSetup->fSolRotY = x;
   }else if( cmd == fUpdateCmd ){
-    //fEMfieldSetup->UpdateConfiguration();
+    G4cout << "Updating magnetic field configuration... " << G4endl;
+    fEMfieldSetup->UpdateConfiguration();
   }else{
     G4cout<<__PRETTY_FUNCTION__<<" at line "<<__LINE__<<G4endl;
     G4cerr <<"Don't know this command :"<<cmd<<G4endl;
   }
+
+
+  
 
   /*
     if( command == fStepperCmd )

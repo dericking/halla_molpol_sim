@@ -36,7 +36,7 @@ class MolPolMessenger : public G4UImessenger {
 	void SetEvAct( MolPolEventAction *ev ){ fevact = ev; }
 	void SetStepAct( MolPolSteppingAction *st ){ fStepAct = st; }
   //    void SetFieldSet( MolPolEMFieldSetup* fs ){ fFieldSet = fs; }
-		    
+
 	void SetNewValue(G4UIcommand* cmd, G4String newValue);
 
     private:
@@ -45,18 +45,27 @@ class MolPolMessenger : public G4UImessenger {
 	MolPolEventAction *fevact;
 	MolPolPrimaryGeneratorAction *fprigen;
 	MolPolSteppingAction *fStepAct;
-  //  MolPolEMFieldSetup *fFieldSet;
 
-        G4UIdirectory *fMolPolDir;
-	
-	G4UIcmdWithAnInteger *seedCmd;
-	G4UIcmdWithAString   *fileCmd;
-        G4UIcmdWithAString   *genSelectCmd;
+    G4UIdirectory *fMolPolDir;
 
+    G4UIcmdWithABool          *fLevchukEffectCmd;
+    G4UIcmdWithADouble        *fTargPolCmd;
+    G4UIcmdWithABool          *fRadCorrCmd;
+    G4UIcmdWithABool          *fRemollMSFlagCmd;
+
+	G4UIcmdWithAnInteger      *seedCmd;
+	G4UIcmdWithAString        *fileCmd;
+    G4UIcmdWithAString        *genSelectCmd;
+
+    // beam positioning
 	G4UIcmdWithADoubleAndUnit *fXminCmd;
 	G4UIcmdWithADoubleAndUnit *fXmaxCmd;
 	G4UIcmdWithADoubleAndUnit *fYminCmd;
 	G4UIcmdWithADoubleAndUnit *fYmaxCmd;
+
+    // beam profile
+	G4UIcmdWithADoubleAndUnit *fXsmearCmd;
+	G4UIcmdWithADoubleAndUnit *fYsmearCmd;
 
 	G4UIcmdWithADoubleAndUnit *fBeamECmd;
 	G4UIcmdWithADoubleAndUnit *fEminCmd;
@@ -67,30 +76,17 @@ class MolPolMessenger : public G4UImessenger {
 
 	G4UIcmdWithADoubleAndUnit *fthetaMinCmd;
 	G4UIcmdWithADoubleAndUnit *fthetaMaxCmd;
+    
 	G4UIcmdWithADoubleAndUnit *fphiMinCmd;
 	G4UIcmdWithADoubleAndUnit *fphiMaxCmd;
 
-  /*
-        G4UIcmdWithAnInteger *fMagSourceCmd;
-        G4UIcmdWithADouble *fQ1ACmd;
-        G4UIcmdWithADouble *fQ2ACmd;
-        G4UIcmdWithADouble *fQ3ACmd;
-        G4UIcmdWithADouble *fQ4ACmd;
-        G4UIcmdWithADouble *fQ5ACmd;
-
-        G4UIcmdWithADouble *fQ1TCmd;
-        G4UIcmdWithADouble *fQ2TCmd;
-        G4UIcmdWithADouble *fQ3TCmd;
-        G4UIcmdWithADouble *fQ4TCmd;
-        G4UIcmdWithADouble *fQ5TCmd;
-  */
-
-//	G4UIcmdWithADoubleAndUnit *fThetaCmd;
-//	G4UIcmdWithADoubleAndUnit *fPhiCmd;
+	G4UIcmdWithADoubleAndUnit *fXCmd;
+	G4UIcmdWithADoubleAndUnit *fYCmd;
 	G4UIcmdWithADoubleAndUnit *fZCmd;
+
+    G4UIcmdWithADoubleAndUnit *fBeamRotZXCmd;
+    G4UIcmdWithADoubleAndUnit *fBeamRotZYCmd;
 
 };
 
 #endif//MolPolMessenger_HH
-
-
