@@ -1,36 +1,64 @@
 /run/initialize
 
+## GEANT4 COMMANDS FOR CLEAN KRYPT SIMULATION DO NOT USE FOR REAL SIMULATIONS!!!!!!!!!!!!!!
+/process/inactivate       eBrem
+/process/inactivate       eIoni
+/process/inactivate       msc
+/process/inactivate       LowEnCompton
+/process/inactivate       phot
+/process/inactivate       CoulombScat
+
+#GENERAL: GENERATOR TYPES: moller, LUND, beam
 /MolPol/gen               moller
-/MolPol/filename          results_MolPol.root
+/MolPol/filename          results_straight_x.root
+
+#GENERATOR EFFECTS
 /MolPol/calculateLevchuk  true
-/MolPol/targetPolPct      0.08523
-/MolPol/radCorrections    true
-/MolPol/remollMS          true
+/MolPol/targetPolPct      0.0801
+/MolPol/radCorrections    false
+/MolPol/remollMS          false
 /MolPol/seed              8675309
 
-/MolPol/thcommin          50   deg
-/MolPol/thcommax          130  deg
-/MolPol/phimin           -22.5 deg
-/MolPol/phimax            7.5  deg
+#SOLID ANGLE SPACE
+/MolPol/thcommin          70   deg
+/MolPol/thcommax          110  deg
+/MolPol/phimin           -25   deg
+/MolPol/phimax           -5    deg
 
-/MolPol/fz                6.9  cm
-/MolPol/fy                0.0  cm
-/MolPol/fx                0.0  cm
-/MolPol/xsmear            0.2  mm
-/MolPol/ysmear            0.2  mm
+#BEAM INFORMATION - TARGET AT 6.74 cm - YCORRECTOR CENTER AT -25.1 cm 
+/MolPol/fx                1.0     mm
+/MolPol/fy                0       mm
+/MolPol/fz                6.74    cm
+/MolPol/xsmear            0.     mm
+/MolPol/ysmear            0.     mm
+/MolPol/beamRotZX         0.000   rad
+/MolPol/beamRotZY         0.000   rad
+/MolPol/beamE             0.95    GeV
 
+
+#FIELD INFORMATION
 /field/MagSourceMode      1
-/field/setQ1T             0.25
-/field/setQ2T             0.05
-/field/setQ3T             0.0
-/field/setQ4T             0.1
-/field/setQ5T             0.296
-/field/setQ6T             3.5
+/field/setQ1T             0.3079
+/field/setQ2T            -0.06
+/field/setQ3T             0.
+/field/setQ4T             0.06
+/field/setQ5T             0.153
+/field/setQ6T             4.
 
-/MolPol/beamE             2.2 GeV
+#MAGNET OFFSET INFORMATION
+/field/setQ1YOffset       0.530   mm       
+/field/setQ2XOffset       0.500   mm
+/field/setQ4XOffset       0.250   mm
+/field/setQ4YOffset       0.600   mm
+/field/setQ6XOffset       0.280   mm
+/field/setQ6YOffset      -0.470   mm
+/field/setQ6XRot          0.00007 rad
+/field/setQ6YRot          0.00030 rad 
+#SOLENOID X:.28mm,Y:-0.47,XROT:0.0042 deg,YROT:0.00077 deg
 
-/gun/particle             e-
-
+#FIELD UPDATE COMMAND MUST BE MADE AFTER FIELD DEFINITIONS
 /field/update
 
+
+/gun/particle             e-
 /run/beamOn               100000
